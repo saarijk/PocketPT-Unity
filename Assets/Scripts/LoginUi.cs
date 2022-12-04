@@ -10,7 +10,9 @@ public class LoginUi : MonoBehaviour
     [SerializeField] private InputField ageField;
     [SerializeField] private InputField weightField;
     [SerializeField] private InputField heightField;
-    
+    [SerializeField] private InputField loginField;
+    [SerializeField] private Text profileInfo;
+
     public void Create()
     {
         User user = new User
@@ -21,5 +23,12 @@ public class LoginUi : MonoBehaviour
             HeightCm = int.Parse(heightField.text)
         };
         loginManager.CreateUser(user);
+    }
+
+    public async void GetUser()
+    {
+        int id = int.Parse(loginField.text);
+        var user = loginManager.GetUser(id).Result;
+        profileInfo.text = $"Name: {user.Name}\nAge: {user.Age}\nWeight: {user.Weight}\nHeight: {user.HeightCm}cm";
     }
 }

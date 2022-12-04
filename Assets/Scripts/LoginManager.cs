@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 
 public class LoginManager : MonoBehaviour
 {
@@ -15,4 +16,14 @@ public class LoginManager : MonoBehaviour
         var result = await response.Content.ReadAsStringAsync();
         Debug.Log(response.IsSuccessStatusCode);
     }   
+
+    public async Task<User> GetUser(int id)
+    {
+        var newUrl = $"{url}/{id}";
+        using var client = new HttpClient();
+        var response = client.GetAsync(newUrl);
+        Debug.Log(await response.Result.Content.ReadAsStringAsync());
+        var user = JsonConvert.DeserializeObject<User>(await response.Result.Content.ReadAsStringAsync());
+        return user;
+    }
 }
